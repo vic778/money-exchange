@@ -1,4 +1,4 @@
-# README
+# MONEY EXCHANGE
 
 Following the interview here is a test task. It would be great if you could solve it during next week. And please let me know if you have any questions
 
