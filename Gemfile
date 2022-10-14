@@ -48,9 +48,33 @@ gem "bootsnap", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
+# Additional gems
+gem 'activeadmin'
+gem 'devise'
+gem 'dotenv-rails'
+gem 'faker'
+gem 'httparty', '~> 0.20.0'
+gem 'jwt'
+gem 'omniauth-google-oauth2'
+gem "pundit"
+gem 'rack-cors'
+gem 'rest-client'
+gem 'ripple-rails', '~> 0.2.0'
+gem 'rspec-rails', '~> 5.1', '>= 5.1.2'
+gem 'rswag'
+gem 'rswag-api'
+gem 'rswag-ui'
+gem 'sidekiq', '~> 6.5', '>= 6.5.6'
+gem 'sinatra'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
+  gem 'factory_bot_rails'
+  gem 'letter_opener'
+  gem 'pry'
+  gem 'rubocop'
+  gem 'shoulda-matchers'
 end
 
 group :development do
