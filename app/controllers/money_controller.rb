@@ -2,72 +2,70 @@ require 'json'
 require 'net/http'
 require 'httparty'
 
-class Money 
-    # include HTTParty
-#     api_key = "9aMBOMPD3Az3URY0ZXnFnF8AH3oYQWPm"
+class Money
+  skip_before_action :verify_authenticity_token
 
-# url = "https://api.apilayer.com/currency_data/change?start_date=#{@start_date}&end_date=#{@end_date}"
-#     res = HTTParty.get(url,  api_key)
-# #     res = JSON.parse(res.body)
-#  array = []
+  def index
+    @source = "usd"
+    @currencies = "eur"
+    url = URI("https://api.apilayer.com/fixer/latest")
+    # url = URI("https://api.apilayer.com/currency_data/live?source=#{@source}&currencies=#{@currencies}")
 
-#     @start_date = '2021-01-01'
-#     @end_date = '2022-10-15'
-# #     puts "start_date: #{res}"
+    https = Net::HTTP.new(url.host, url.port)
+    https.use_ssl = true
 
-# url = URI("https://api.apilayer.com/currency_data/change?start_date=#{@start_date}&end_date=#{@end_date}")
-
-# https = Net::HTTP.new(url.host, url.port);
-# https.use_ssl = true
-
-# request = Net::HTTP::Get.new(url)
-# request['apikey'] = "9aMBOMPD3Az3URY0ZXnFnF8AH3oYQWPm"
-
-# response = https.request(request)
-# array << response.read_body
-# puts array
-
-
-
-    # api_url = "9aMBOMPD3Az3URY0ZXnFnF8AH3oYQWPm"
-    # require "uri"
-    # require "net/http"
-    
-    # url = URI("https://api.apilayer.com/fixer/convert?to=#{@to}&from=#{@from}&amount=#{@amount}")
-    # @to = "usd"
-    # @from = "EUR"
-    # @amount = "100"
-    
-    # https = Net::HTTP.new(url.host, url.port);
-    # https.use_ssl = true
-    
-    # request = Net::HTTP::Get.new(url)
+    request = Net::HTTP::Get.new(url)
     # request['apikey'] = "9aMBOMPD3Az3URY0ZXnFnF8AH3oYQWPm"
-    
-    # response = https.request(request)
-    # puts response.read_body
-    
-    
-    # https = Net::HTTP.new(url.host, url.port);
-    # https.use_ssl = true
-    
-    # request = Net::HTTP::Get.new(url)
-    # request['apikey'] = 
-    
-    # response = https.request(request)
-    # puts response.read_body
+    request['apikey'] = "6n6ZUfT4WVoRBN8EbAk4kSnplNskUOlR"
 
-    # url = URI("https://api.apilayer.com/fixer/latest")
-    url = URI("https://api.apilayer.com/currency_data/list")
+    response = https.request(request)
+    @response = JSON.parse(response.read_body)
+    # return response
+    render json: @response if @response
+    # scope_details
 
-https = Net::HTTP.new(url.host, url.port);
-https.use_ssl = true
+    @response["quotes"]
 
-request = Net::HTTP::Get.new(url)
-request['apikey'] = "9aMBOMPD3Az3URY0ZXnFnF8AH3oYQWPm"
+    # puts @response["quotes"]
 
-response = https.request(request)
-response = JSON.parse(response.read_body)
-render json: response if response
-    
+    # @exchange = Exchange.new
+    # @exchange.name = @response["quotes"]
+    # @exchange.save
+
+    # puts "here is the exchange#{@exchange}"
+
+    # end
+  end
+
+  # def create
+  #   @response.each do |key, value|
+  #     @exchange = Exchange.new
+  #     @exchange.name = key
+  #     @exchange.full_name = value
+  #     @exchange.save
+  #   end
+  #   if @exchange.save
+  #     render json: @exchange, status: :created, location: @exchange
+  #   else
+  #     render json: @exchange.errors, status: :unprocessable_entity
+  #   end
+  # end
+
+  def scope_details
+    @array = []
+    @response.each do |_key, value|
+      # puts key
+      @array << value.to_s
+    end
+
+    puts @array
+
+    # @array.each do |value|
+    #   @exchange = Exchange.new
+    #   @exchange.name = value
+    #   @exchange.full_name =
+    #   @exchange.save
+    # end
+    #
+  end
 end
