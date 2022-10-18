@@ -1,9 +1,10 @@
 class ExchangesController < ApplicationController
-  before_action :set_exchange, only: %i[show update destroy]
+  before_action :set_exchange, only: %i[update destroy]
 
-  def index
-    # @exchanges = Exchange.all
-    # render json: @exchanges
+  def index; end
+
+  def show
+    @exchange = Exchange.find(params[:id])
   end
 
   def new
@@ -19,10 +20,17 @@ class ExchangesController < ApplicationController
 
     respond_to do |format|
       if @exchange.save
-        format.html { redirect_to root_path, notice: 'Exchange was successfully created.' }
+        # format.turbo_stream do
+        #   render turbo_stream: [
+        #     turbo_stream.update('new_exchange', partial: 'exchanges/form', locals: { exchange: Exchange.new }),
+        #     turbo_stream.prepend('exchange', partial: 'exchanges/exchange', locals: { exchange: @exchange })
+
+        #   ]
+        # end
+        format.html { redirect_to @exchange, notice: 'Exchange was successfully created.' }
         format.json { render :show, status: :created, location: @exchange }
       else
-        format.html { render :new, alert: @exchange.errors }
+        format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @exchange.errors, status: :unprocessable_entity }
       end
     end

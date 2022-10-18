@@ -1,5 +1,6 @@
+
 <%= form_with(model: @exchange) do |form| %>
-  <% if @exchange.errors.any? %>
+  <% if @exchange.errors %>
     <div style="color: red">
       <h2><%= pluralize(@exchange.errors.count, "error") %> prohibited this movie from being saved:</h2>
 
