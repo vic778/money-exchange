@@ -1,0 +1,38 @@
+
+<%= form_with(model: @exchange) do |form| %>
+  <% if @exchange.errors %>
+    <div style="color: red">
+      <h2><%= pluralize(@exchange.errors.count, "error") %> prohibited this movie from being saved:</h2>
+
+      <ul>
+        <% @exchange.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+    <div>
+    <%= form.label :amount, style: "display: block" %>
+    <%= form.text_field :amount, style: "display: block" %>
+  </div>
+
+  <div>
+    <%= form.label :from, style: "display: block" %>
+    <%= form.select  :from,collection: Exchange::FROM %>
+  </div>
+
+    <div>
+    <%= form.label :to, style: "display: block" %>
+    <%= form.select  :to,collection: Exchange::TO %>
+  </div>
+
+    <div>
+    <%= form.label :date, style: "display: block" %>
+    <%= form.text_field :date, style: "display: block" %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

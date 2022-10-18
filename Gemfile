@@ -57,6 +57,7 @@ gem 'httparty', '~> 0.20.0'
 gem 'jwt'
 gem 'omniauth-google-oauth2'
 gem "pundit"
+gem 'pusher'
 gem 'rack-cors'
 gem 'rest-client'
 gem 'ripple-rails', '~> 0.2.0'
