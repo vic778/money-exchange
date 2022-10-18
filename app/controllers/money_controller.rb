@@ -6,37 +6,39 @@ class Money
   # skip_before_action :verify_authenticity_token
 
   # def index
-    @source = "usd"
-    @currencies = "eur"
-    # url = URI("https://api.apilayer.com/fixer/latest")
+  @source = "usd"
+  @currencies = "eur"
+  # url = URI("https://api.apilayer.com/fixer/latest")
 
-    # url = URI("https://api.apilayer.com/fixer/latest?symbols=symbols&base=base")
-    # url = URI("https://api.apilayer.com/currency_data/live?source=#{@source}&currencies=#{@currencies}")
+  # url = URI("https://api.apilayer.com/fixer/latest?symbols=symbols&base=base")
+  # url = URI("https://api.apilayer.com/currency_data/live?source=#{@source}&currencies=#{@currencies}")
 
-    url = URI("https://api.apilayer.com/fixer/latest")
+  url = URI("https://api.apilayer.com/fixer/latest")
 
-    https = Net::HTTP.new(url.host, url.port);
-    https.use_ssl = true
-    
-    request = Net::HTTP::Get.new(url)
-    request['apikey'] = "6n6ZUfT4WVoRBN8EbAk4kSnplNskUOlR"
-    
-    response = https.request(request)
-    res = JSON.parse(response.read_body)
-    res["rates"]
-    puts res
-   
+  https = Net::HTTP.new(url.host, url.port)
+  https.use_ssl = true
 
+  request = Net::HTTP::Get.new(url)
+  request['apikey'] = "6n6ZUfT4WVoRBN8EbAk4kSnplNskUOlR"
 
-    # puts @response["quotes"]
+  response = https.request(request)
+  res = JSON.parse(response.read_body)
+  res["rates"].each do |key, value|
+    # remove --- and \n for key
+    name = key.gsub(/---/, '').gsub(/\n/, '')
+    currency = value
+    puts name
+  end
 
-    # @exchange = Exchange.new
-    # @exchange.name = @response["quotes"]
-    # @exchange.save
+  # puts @response["quotes"]
 
-    # puts "here is the exchange#{@exchange}"
+  # @exchange = Exchange.new
+  # @exchange.name = @response["quotes"]
+  # @exchange.save
 
-    # end
+  # puts "here is the exchange#{@exchange}"
+
+  # end
   # end
 
   # def create
@@ -62,12 +64,12 @@ class Money
 
   #   puts @array
 
-    # @array.each do |value|
-    #   @exchange = Exchange.new
-    #   @exchange.name = value
-    #   @exchange.full_name =
-    #   @exchange.save
-    # end
-    #
+  # @array.each do |value|
+  #   @exchange = Exchange.new
+  #   @exchange.name = value
+  #   @exchange.full_name =
+  #   @exchange.save
+  # end
+  #
   # end
 end
