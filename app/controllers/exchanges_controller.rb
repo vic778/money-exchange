@@ -2,8 +2,8 @@ class ExchangesController < ApplicationController
   before_action :set_exchange, only: %i[show update destroy]
 
   def index
-    @exchanges = Exchange.all
-    render json: @exchanges
+    # @exchanges = Exchange.all
+    # render json: @exchanges
   end
 
   def new
@@ -17,10 +17,14 @@ class ExchangesController < ApplicationController
     gbp_currency if @exchange.from == 'gbp' && @exchange.to == 'eur'
     aud_currency if @exchange.from == 'aud' && @exchange.to == 'eur'
 
-    if @exchange.save
-      render json: { success: true, message: 'Exchange created successfully', exchange: @exchange }, status: :created
-    else
-      render json: { success: false, exchange: @exchange.errors }, status: :unprocessable_entity
+    respond_to do |format|
+      if @exchange.save
+        format.html { redirect_to root_path, notice: 'Exchange was successfully created.' }
+        format.json { render :show, status: :created, location: @exchange }
+      else
+        format.html { render :new, alert: @exchange.errors }
+        format.json { render json: @exchange.errors, status: :unprocessable_entity }
+      end
     end
   end
 
