@@ -3,8 +3,20 @@ require 'net/http'
 require 'httparty'
 
 class ExchangesController < ApplicationController
+  # def check
 
-  def index; end
+  # end
+
+  def index
+    # update_currency
+    from = Currency.find_by(name: params[:from])
+    value = from.currency
+    to = Currency.find_by(name: params[:to])
+    amount = params[:amount].to_f
+    @amount_converted = amount * value if from == 'USD' && to == 'EUR'
+    # render json: { amount_converted: @amount_converted }
+    puts "amount_converted: #{@amount_converted}"
+  end
 
   def show
     @exchange = Exchange.find(params[:id])
@@ -15,7 +27,6 @@ class ExchangesController < ApplicationController
   end
 
   def create
-    # update_currency
     @exchange = Exchange.new(exchange_params)
     usd_currency if @exchange.from == 'usd' && @exchange.to == 'eur'
     eur_currency if @exchange.from == 'cad' && @exchange.to == 'usd'
@@ -66,20 +77,22 @@ class ExchangesController < ApplicationController
 
   def update_currency
     url = URI("https://api.apilayer.com/fixer/latest")
-  
-    https = Net::HTTP.new(url.host, url.port);
+
+    https = Net::HTTP.new(url.host, url.port)
     https.use_ssl = true
-    
+
     request = Net::HTTP::Get.new(url)
     request['apikey'] = "6n6ZUfT4WVoRBN8EbAk4kSnplNskUOlR"
-    
+
     response = https.request(request)
     res = JSON.parse(response.read_body)
-    res["rates"]
-    @curreny = Currency.new(name: res["rates"])
-    @curreny.save
-  
-   end
+    res["rates"].each do |key, value|
+      name = key.gsub(/---/, '').gsub(/\n/, '')
+      currency = value
+      @currency = Currency.new(name: name, currency: currency)
+      @currency.save
+    end
+  end
 
   private
 
