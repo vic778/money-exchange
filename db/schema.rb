@@ -16,8 +16,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_17_153240) do
 
   create_table "exchanges", force: :cascade do |t|
     t.integer "amount"
-    t.string "currrency"
-    t.integer "amount_to_calculate"
+    t.string "from"
+    t.string "to"
+    t.integer "amount_converted"
+    t.date "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
