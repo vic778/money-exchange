@@ -23,9 +23,9 @@ class Money
     
     response = https.request(request)
     res = JSON.parse(response.read_body)
-    res["rates"].each do |key, value|
-      puts "#{key} #{value}"
-    end
+    res["rates"]
+    puts res
+   
 
 
     # puts @response["quotes"]

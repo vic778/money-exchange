@@ -1,5 +1,8 @@
+require 'json'
+require 'net/http'
+require 'httparty'
+
 class ExchangesController < ApplicationController
-  before_action :set_exchange, only: %i[update destroy]
 
   def index; end
 
@@ -12,6 +15,7 @@ class ExchangesController < ApplicationController
   end
 
   def create
+    # update_currency
     @exchange = Exchange.new(exchange_params)
     usd_currency if @exchange.from == 'usd' && @exchange.to == 'eur'
     eur_currency if @exchange.from == 'cad' && @exchange.to == 'usd'
@@ -38,23 +42,44 @@ class ExchangesController < ApplicationController
 
   def usd_currency
     @exchange.amount_converted = @exchange.amount * 0.90
+    @exchange.save
     Exchange.last.update!(amount_converted: @exchange.amount_converted)
   end
 
   def eur_currency
     @exchange.amount_converted = @exchange.amount / 1.31
+    @exchange.save
     Exchange.last.update!(amount_converted: @exchange.amount_converted)
   end
 
   def gbp_currency
     @exchange.amount_converted = @exchange.amount * 1.16
+    @exchange.save
     Exchange.last.update!(amount_converted: @exchange.amount_converted)
   end
 
   def aud_currency
     @exchange.amount_converted = @exchange.amount * 0.685
+    @exchange.save
     Exchange.last.update!(amount_converted: @exchange.amount_converted)
   end
+
+  def update_currency
+    url = URI("https://api.apilayer.com/fixer/latest")
+  
+    https = Net::HTTP.new(url.host, url.port);
+    https.use_ssl = true
+    
+    request = Net::HTTP::Get.new(url)
+    request['apikey'] = "6n6ZUfT4WVoRBN8EbAk4kSnplNskUOlR"
+    
+    response = https.request(request)
+    res = JSON.parse(response.read_body)
+    res["rates"]
+    @curreny = Currency.new(name: res["rates"])
+    @curreny.save
+  
+   end
 
   private
 
