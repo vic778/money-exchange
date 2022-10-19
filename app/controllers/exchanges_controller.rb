@@ -32,6 +32,4 @@ class ExchangesController < ApplicationController
       end
     end
   end
-
-  def update_currency; end
 end

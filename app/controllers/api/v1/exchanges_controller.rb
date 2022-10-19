@@ -8,7 +8,7 @@ class Api::V1::ExchangesController < ApplicationController
 
     amount = params[:amount].to_f
     # amount_converted = amount * to.currency if from == 'USD' && to == 'EUR'
-    amount_converted = amount / a.currency if from == 'USD' && to == 'EUR'
+    amount_converted = amount * a.currency if from == 'USD' && to == 'EUR'
     amount_converted = amount * a.currency if from == 'GBP' && to == 'EUR'
     amount_converted = amount * a.currency if from == 'AUD' && to == 'EUR'
     amount_converted = amount / a.currency if from == 'EAD' && to == 'USD'
