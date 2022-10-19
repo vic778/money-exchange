@@ -23,4 +23,9 @@ class Api::V1::ExchangesController < ApplicationController
 
     render json: { success: true, message: "Exchange succefully", amount_converted: @exchange.amount_converted }, status: :ok if @exchange.save
   end
+
+  def check_statement
+    @exchange = Exchange.where(from: "USD")
+    render json: { success: true, message: "Exchange succefully", amount_converted: @exchange }, status: :ok if @exchange.save
+  end
 end
