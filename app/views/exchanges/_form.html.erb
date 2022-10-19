@@ -1,17 +1,6 @@
 
-<%= form_with(model: @exchange) do |form| %>
-  <% if @exchange.errors %>
-    <div style="color: red">
-      <h2><%= pluralize(@exchange.errors.count, "error") %> prohibited this movie from being saved:</h2>
-
-      <ul>
-        <% @exchange.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
+<%= form_with(model: @currency, url: "exchanges/new", method: :get)  do |form| %>
+ 
     <div>
     <%= form.label :amount, style: "display: block" %>
     <%= form.text_field :amount, style: "display: block" %>
@@ -19,12 +8,12 @@
 
   <div>
     <%= form.label :from, style: "display: block" %>
-    <%= form.select  :from,collection: Exchange::FROM %>
+    <%= form.select  :from,collection: Currency::FROM %>
   </div>
 
     <div>
     <%= form.label :to, style: "display: block" %>
-    <%= form.select  :to,collection: Exchange::TO %>
+    <%= form.select  :to,collection: Currency::TO %>
   </div>
 
     <div>

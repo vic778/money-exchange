@@ -1,64 +1,51 @@
+require 'json'
+require 'net/http'
+require 'httparty'
+
 class ExchangesController < ApplicationController
-  before_action :set_exchange, only: %i[update destroy]
-
-  def index; end
-
-  def show
-    @exchange = Exchange.find(params[:id])
+  def index
+    # update_currency
   end
 
   def new
-    @exchange = Exchange.new
-  end
+    from = Currency.find_by(name: params[:from])
+    to = Currency.find_by(name: params[:to])
 
-  def create
-    @exchange = Exchange.new(exchange_params)
-    usd_currency if @exchange.from == 'usd' && @exchange.to == 'eur'
-    eur_currency if @exchange.from == 'cad' && @exchange.to == 'usd'
-    gbp_currency if @exchange.from == 'gbp' && @exchange.to == 'eur'
-    aud_currency if @exchange.from == 'aud' && @exchange.to == 'eur'
+    amount = params[:amount].to_f
+    # amount_converted = amount * to.currency if from == 'USD' && to == 'EUR'
+    amount_converted = amount / to.currency if from == 'CAD' && to == 'USD'
+    amount_converted = amount * to.currency if from == 'GBP' && to == 'EUR'
+    amount_converted = amount * to.currency if from == 'AUD' && to == 'EUR'
+    amount_converted = amount / to.currency if from == 'EAD' && to == 'USD'
+    amount_converted = amount * to.currency if from == 'USD' && to == 'EUR'
+    amount_converted = amount * to.currency if from == 'USD' && to == 'UGX'
+    amount_converted = amount * to.currency if from == 'USD' && to == 'GHS'
 
-    respond_to do |format|
-      if @exchange.save
-        # format.turbo_stream do
-        #   render turbo_stream: [
-        #     turbo_stream.update('new_exchange', partial: 'exchanges/form', locals: { exchange: Exchange.new }),
-        #     turbo_stream.prepend('exchange', partial: 'exchanges/exchange', locals: { exchange: @exchange })
-
-        #   ]
-        # end
-        format.html { redirect_to @exchange, notice: 'Exchange was successfully created.' }
-        format.json { render :show, status: :created, location: @exchange }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @exchange.errors, status: :unprocessable_entity }
+    if amount_converted
+      puts "The amount converted is #{amount_converted}"
+      respond_to do |format|
+        format.html { render :new, notice: 'Exchange was successfully created.', amount_converted: amount_converted }
+        format.json { render :show, status: :created, amount_converted: amount_converted }
       end
     end
   end
 
-  def usd_currency
-    @exchange.amount_converted = @exchange.amount * 0.90
-    Exchange.last.update!(amount_converted: @exchange.amount_converted)
-  end
+  def update_currency
+    url = URI("https://api.apilayer.com/fixer/latest")
 
-  def eur_currency
-    @exchange.amount_converted = @exchange.amount / 1.31
-    Exchange.last.update!(amount_converted: @exchange.amount_converted)
-  end
+    https = Net::HTTP.new(url.host, url.port)
+    https.use_ssl = true
 
-  def gbp_currency
-    @exchange.amount_converted = @exchange.amount * 1.16
-    Exchange.last.update!(amount_converted: @exchange.amount_converted)
-  end
+    request = Net::HTTP::Get.new(url)
+    request['apikey'] = "6n6ZUfT4WVoRBN8EbAk4kSnplNskUOlR"
 
-  def aud_currency
-    @exchange.amount_converted = @exchange.amount * 0.685
-    Exchange.last.update!(amount_converted: @exchange.amount_converted)
-  end
-
-  private
-
-  def exchange_params
-    params.require(:exchange).permit(:amount, :from, :to, :amount_converted)
+    response = https.request(request)
+    res = JSON.parse(response.read_body)
+    res["rates"].each do |key, value|
+      name = key.gsub(/---/, '').gsub(/\n/, '')
+      currency = value
+      @currency = Currency.new(name: name, currency: currency)
+      @currency.save
+    end
   end
 end
