@@ -66,6 +66,7 @@ gem 'rswag'
 gem 'rswag-api'
 gem 'rswag-ui'
 gem 'sidekiq', '~> 6.5', '>= 6.5.6'
+gem 'sidekiq-cron'
 gem 'sinatra'
 
 group :development, :test do
