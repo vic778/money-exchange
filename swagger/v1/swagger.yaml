@@ -1,0 +1,37 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/api/v1/exchange":
+    get:
+      summary: Calculate the exchange rate
+      tags:
+      - Exchanges
+      parameters:
+      - name: from
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: to
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: amount
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '204':
+          description: exchange created
+        '422':
+          description: invalid request
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000
