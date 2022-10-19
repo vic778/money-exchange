@@ -1,8 +1,9 @@
 # MONEY EXCHANGE
 
-> This is a simple exchange web app that allow users to exchange their moeny according to the currency they have choosed. it update the curency database by getting rule from an api. for that i'm using background job and sidekiq cron for schedule every single day at 07h 05 AM to run the function.   models:
+> This is a simple exchange web app that allow users to exchange their moeny according to the currency they have choosed. it update the curency database by getting rule from an api. for that i'm using background job and sidekiq cron for schedule every single day at 07h 05 AM to run the function. if the exchange is done it create a object and so far we can retrieve the number of time a currency got used.   models:
 
   - Exchange
+  - Currency
 
 ### Deployment
  N/A `Kinldy i can't config my google SMTP because i using it to some of my projects that's why i did;\'nt deployed the app on heroku as well`
