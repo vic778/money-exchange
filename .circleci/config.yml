@@ -23,7 +23,7 @@ jobs:
       - image: cimg/postgres:14.2
         environment:
           POSTGRES_USER: postgres
-          POSTGRES_DB: PerxTechBackend_test
+          POSTGRES_DB: moneyExchange_test
           POSTGRES_PASSWORD: "password"
     environment:
       BUNDLE_JOBS: "3"
