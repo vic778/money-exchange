@@ -1,0 +1,4 @@
+exchange_job:
+  cron: "5 7 * * *"
+  class: "ExchangeJob"
+  queue: default
