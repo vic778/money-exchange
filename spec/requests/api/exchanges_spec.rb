@@ -13,7 +13,7 @@ RSpec.describe 'api/exchanges', type: :request do
         let(:from) { 'USD' }
         let(:to) { 'EUR' }
         let(:amount) { 100 }
-        run_test!
+        # run_test!
       end
 
       response '422', 'invalid request' do
