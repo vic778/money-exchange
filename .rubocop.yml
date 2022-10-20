@@ -73,6 +73,10 @@ Lint/AssignmentInCondition:
   Enabled: false
 Lint/MissingCopEnableDirective:
   Enabled: false
+Lint/FloatComparison:
+  Enabled: false
+Lint/Void:
+  Enabled: false
 Style/HashEachMethods:
   Enabled: false
 Style/HashTransformKeys:
