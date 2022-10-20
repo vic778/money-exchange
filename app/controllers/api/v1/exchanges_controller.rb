@@ -20,23 +20,22 @@ class Api::V1::ExchangesController < ApplicationController
 
   def create_statement
     @exchange = Exchange.new(from: @from, to: @to, amount: params[:amount], amount_converted: @amount_converted)
-
-    render json: { success: true, message: "Exchange succefully", amount_converted: @exchange.amount_converted }, status: :ok if @exchange.save
-  end
-
-  def check_request
-    total_request = 100
-    if @amount_converted < total_request
-      # decrease the total request
-      stat = total_request -= 1
-      pust "you have #{stat} request left"
+    if @exchange.save
+      total_request = 100
+      sum_request = 0
+      if total_request > sum_request
+        total_request -= 1
+        render json: { success: true, message: "you have #{total_request} request lef", amount_converted: @exchange.amount_converted }, status: :ok
+      else
+        render json: { success: false, message: "you have #{sum_request} request lef", amount_converted: @exchange.amount_converted }, status: :ok
+      end
     else
-      puts "you have no request left"
+      render json: { success: false, message: @exchange.errors }, status: :unprocessable_entity
     end
   end
 
   def check_statement
-    @exchange = Exchange.where(from: "USD")
-    render json: { success: true, message: "Exchange succefully", amount_converted: @exchange }, status: :ok if @exchange.save
+    exchange = Exchange.where(from: "USD")
+    render json: { success: true, message: "Exchange succefully", amount_converted: exchange }, status: :ok if exchange
   end
 end

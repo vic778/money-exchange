@@ -9,27 +9,24 @@ paths:
       summary: Calculate the exchange rate
       tags:
       - Exchanges
-      parameters:
-      - name: from
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: to
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: amount
-        in: path
-        required: true
-        schema:
-          type: integer
       responses:
-        '204':
+        '200':
           description: exchange created
-        '422':
-          description: invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  amount_converted:
+                    type: float
+                required:
+                - success
+                - message
+                - amount_converted
 servers:
 - url: http://{defaultHost}
   variables:
