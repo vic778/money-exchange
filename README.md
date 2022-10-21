@@ -52,7 +52,7 @@ Here are the steps to follow in order to get this project on your local computer
 
 ### Setup
 
-clone this repo by typing `git clone https://github.com/vic778/Jumia-API`
+clone this repo by typing `git clone https://github.com/vic778/money-exchange`
 
 ### Install
 
@@ -83,7 +83,7 @@ run the tests by typing `rails rswag`
 
 Contributions, issues and feature requests are welcome!
 
-Feel free to check the [issues page](issues/).
+Feel free to check the [issues page](https://github.com/vic778/money-exchange/issues/6)
 
 ## Show your support
 
