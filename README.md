@@ -28,8 +28,8 @@ period, find a satiable graphical component to visualize the exchange rate.
   - Exchange
   - Currency
 
-### Deployment
- N/A `Kinldy i can't config my google SMTP because i using it to some of my projects that's why i did;\'nt deployed the app on heroku as well`
+### Information
+Kindly open a PR and ask for review so anyone available can have a deeper look and give you some feedback. before doing anything else check the jobs controller and understand what it does. the code are basic to start the project however any update or changes is welcome. 
 ## Built With
 
 - Rails
